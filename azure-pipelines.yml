@@ -15,7 +15,7 @@ steps:
     version: '$(dotnetSdkVersion)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build the project - $(buildConfiguration)'
+  displayName: 'Build the project'
   inputs:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
@@ -32,10 +32,9 @@ steps:
     minorVersion: '1'
     patchVersion: '0'
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'Publish NuGet package'
   inputs:
     command: push
-    feedPublish: '$(System.TeamProject)/Tailspin.SpaceGame.Web.Models'
-    allowPackageConflicts: true
-  condition: succeeded()
+    publishVstsFeed: '$(System.TeamProject)/Tailspin.SpaceGame.Web.Models'
+    packagesToPush: '**/*.nupkg'
