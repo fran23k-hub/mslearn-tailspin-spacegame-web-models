@@ -2,7 +2,7 @@ trigger:
 - '*'
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-22.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -15,14 +15,14 @@ steps:
     version: '$(dotnetSdkVersion)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build the project'
+  displayName: 'Build project'
   inputs:
     command: 'build'
     arguments: '--configuration $(buildConfiguration)'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Pack the project'
+  displayName: 'Pack project'
   inputs:
     command: 'pack'
     projects: '**/*.csproj'
@@ -35,6 +35,6 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Publish NuGet package'
   inputs:
-    command: push
+    command: 'push'
     publishVstsFeed: '$(System.TeamProject)/Tailspin.SpaceGame.Web.Models'
-    packagesToPush: '**/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
